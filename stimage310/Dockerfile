@@ -14,18 +14,11 @@ COPY environment.yml /tmp/environment.yml
 RUN micromamba env create -y -p /opt/conda -f /tmp/environment.yml && \
     micromamba clean -afy
 
-# Clone STimage, patch pyproject.toml to allow direct references, then install
+# Clone STimage, append hatch config to pyproject.toml, then install
 RUN git clone https://github.com/BiomedicalMachineLearning/STimage.git /opt/STimage && \
     cd /opt/STimage && \
-    python -c "import re; \
-content = open('pyproject.toml').read(); \
-if 'allow-direct-references' not in content: \
-    if '[tool.hatch.metadata]' in content: \
-        content = content.replace('[tool.hatch.metadata]', '[tool.hatch.metadata]\nallow-direct-references = true'); \
-    else: \
-        content += '\n[tool.hatch.metadata]\nallow-direct-references = true\n'; \
-open('pyproject.toml', 'w').write(content); \
-print('Patched pyproject.toml')" && \
+    printf '\n[tool.hatch.metadata]\nallow-direct-references = true\n' >> pyproject.toml && \
+    cat pyproject.toml | tail -5 && \
     /opt/conda/bin/pip install -e .
 
 WORKDIR /workspace
