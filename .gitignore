@@ -1,0 +1,12 @@
+# Apptainer 镜像（太大不推）
+*.sif
+*.img
+
+# Apptainer 缓存
+.cache/
+.tmp/
+
+# 编辑器/系统垃圾
+.DS_Store
+*.swp
+*~
