@@ -5,6 +5,7 @@ channels:
   - https://repo.anaconda.com/pkgs/main
   - https://repo.anaconda.com/pkgs/r
 dependencies:
+  - python-spams
   - _openmp_mutex=4.5
   - binutils=2.45.1
   - binutils_impl_linux-64=2.45.1
@@ -130,7 +131,6 @@ dependencies:
       - setuptools==59.8.0
       - shapely==2.1.2
       - six==1.17.0
-      - spams==2.6.5.4
       - staintools==2.1.2
       - stdlib-list==0.12.0
       - tensorboard==2.15.2

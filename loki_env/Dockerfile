@@ -1,9 +1,5 @@
 FROM nvidia/cuda:12.1.0-cudnn8-devel-ubuntu22.04
-
-ENV DEBIAN_FRONTEND=noninteractive \
-    TZ=UTC \
-    PATH=/opt/conda/bin:$PATH \
-    CONDA_AUTO_UPDATE_CONDA=false
+ENV DEBIAN_FRONTEND=noninteractive TZ=UTC PATH=/opt/conda/bin:$PATH
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     wget bzip2 ca-certificates git curl build-essential \
@@ -17,11 +13,10 @@ COPY environment.yml /tmp/environment.yml
 RUN micromamba env create -y -p /opt/conda -f /tmp/environment.yml && \
     micromamba clean -afy
 
-# Clone and install Loki from source
+# Clone Loki and install from src/ subdirectory (per official README)
 RUN git clone https://github.com/GuangyuWangLab2021/Loki.git /opt/Loki && \
-    cd /opt/Loki && \
+    cd /opt/Loki/src && \
     /opt/conda/bin/pip install -e .
 
-ENV PATH=/opt/conda/bin:$PATH
 WORKDIR /workspace
 CMD ["/bin/bash"]
