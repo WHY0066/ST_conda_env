@@ -17,9 +17,11 @@ COPY environment.yml /tmp/environment.yml
 RUN micromamba env create -y -p /opt/conda -f /tmp/environment.yml && \
     micromamba clean -afy
 
-RUN echo "source /opt/conda/etc/profile.d/conda.sh && conda activate /opt/conda" >> /etc/profile.d/conda.sh
+# Clone and install STimage from source
+RUN git clone https://github.com/BiomedicalMachineLearning/STimage.git /opt/STimage && \
+    cd /opt/STimage && \
+    /opt/conda/bin/pip install -e .
 
 ENV PATH=/opt/conda/bin:$PATH
-
 WORKDIR /workspace
 CMD ["/bin/bash"]

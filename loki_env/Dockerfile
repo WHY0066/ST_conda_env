@@ -17,9 +17,11 @@ COPY environment.yml /tmp/environment.yml
 RUN micromamba env create -y -p /opt/conda -f /tmp/environment.yml && \
     micromamba clean -afy
 
-RUN echo "source /opt/conda/etc/profile.d/conda.sh && conda activate /opt/conda" >> /etc/profile.d/conda.sh
+# Clone and install Loki from source
+RUN git clone https://github.com/GuangyuWangLab2021/Loki.git /opt/Loki && \
+    cd /opt/Loki && \
+    /opt/conda/bin/pip install -e .
 
 ENV PATH=/opt/conda/bin:$PATH
-
 WORKDIR /workspace
 CMD ["/bin/bash"]

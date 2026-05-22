@@ -17,9 +17,10 @@ COPY environment.yml /tmp/environment.yml
 RUN micromamba env create -y -p /opt/conda -f /tmp/environment.yml && \
     micromamba clean -afy
 
-RUN echo "source /opt/conda/etc/profile.d/conda.sh && conda activate /opt/conda" >> /etc/profile.d/conda.sh
+RUN /opt/conda/bin/pip install \
+    --index-url https://download.pytorch.org/whl/cu118 \
+    torch==2.0.1+cu118 torchvision==0.15.2+cu118
 
 ENV PATH=/opt/conda/bin:$PATH
-
 WORKDIR /workspace
 CMD ["/bin/bash"]
