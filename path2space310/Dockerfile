@@ -1,9 +1,5 @@
-FROM nvidia/cuda:12.1.0-cudnn8-devel-ubuntu22.04
-
-ENV DEBIAN_FRONTEND=noninteractive \
-    TZ=UTC \
-    PATH=/opt/conda/bin:$PATH \
-    CONDA_AUTO_UPDATE_CONDA=false
+FROM nvidia/cuda:12.4.1-cudnn-devel-ubuntu22.04
+ENV DEBIAN_FRONTEND=noninteractive TZ=UTC PATH=/opt/conda/bin:$PATH
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     wget bzip2 ca-certificates git curl build-essential \
@@ -17,9 +13,10 @@ COPY environment.yml /tmp/environment.yml
 RUN micromamba env create -y -p /opt/conda -f /tmp/environment.yml && \
     micromamba clean -afy
 
-RUN echo "source /opt/conda/etc/profile.d/conda.sh && conda activate /opt/conda" >> /etc/profile.d/conda.sh
-
-ENV PATH=/opt/conda/bin:$PATH
+# Install PyTorch 2.6 + CUDA 12.4 from official PyTorch index
+RUN /opt/conda/bin/pip install \
+    --index-url https://download.pytorch.org/whl/cu124 \
+    torch==2.6.0 torchvision==0.21.0
 
 WORKDIR /workspace
 CMD ["/bin/bash"]
