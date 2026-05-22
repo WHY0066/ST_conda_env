@@ -7,11 +7,10 @@ on:
       - '*/Dockerfile'
       - '*/environment.yml'
       - '.github/workflows/build-images.yml'
-  workflow_dispatch:  # Allow manual trigger from GitHub UI
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_OWNER: ${{ github.repository_owner }}
 
 jobs:
   build:
@@ -20,7 +19,7 @@ jobs:
       contents: read
       packages: write
     strategy:
-      fail-fast: false  # If one env fails, keep building the others
+      fail-fast: false
       matrix:
         env_name:
           - hovernet
@@ -40,6 +39,10 @@ jobs:
           sudo docker image prune -af
           df -h
 
+      - name: Set lowercase owner
+        id: vars
+        run: echo "owner=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_OUTPUT
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -57,6 +60,6 @@ jobs:
           file: ./${{ matrix.env_name }}/Dockerfile
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ matrix.env_name }}:latest
+            ${{ env.REGISTRY }}/${{ steps.vars.outputs.owner }}/${{ matrix.env_name }}:latest
           cache-from: type=gha,scope=${{ matrix.env_name }}
           cache-to: type=gha,scope=${{ matrix.env_name }},mode=max
