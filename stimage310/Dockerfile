@@ -1,13 +1,11 @@
 FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
+ENV DEBIAN_FRONTEND=noninteractive TZ=UTC PATH=/opt/conda/bin:$PATH
 
-ENV DEBIAN_FRONTEND=noninteractive \
-    TZ=UTC \
-    PATH=/opt/conda/bin:$PATH \
-    CONDA_AUTO_UPDATE_CONDA=false
-
+# 额外装：libblas-dev liblapack-dev gfortran（spams 编译需要）
 RUN apt-get update && apt-get install -y --no-install-recommends \
     wget bzip2 ca-certificates git curl build-essential \
     libgl1 libglib2.0-0 libsm6 libxext6 libxrender1 \
+    libblas-dev liblapack-dev gfortran \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -L https://micro.mamba.pm/api/micromamba/linux-64/latest | \
@@ -22,6 +20,5 @@ RUN git clone https://github.com/BiomedicalMachineLearning/STimage.git /opt/STim
     cd /opt/STimage && \
     /opt/conda/bin/pip install -e .
 
-ENV PATH=/opt/conda/bin:$PATH
 WORKDIR /workspace
 CMD ["/bin/bash"]

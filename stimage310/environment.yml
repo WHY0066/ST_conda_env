@@ -5,7 +5,6 @@ channels:
   - https://repo.anaconda.com/pkgs/main
   - https://repo.anaconda.com/pkgs/r
 dependencies:
-  - python-spams
   - _openmp_mutex=4.5
   - binutils=2.45.1
   - binutils_impl_linux-64=2.45.1
@@ -82,6 +81,7 @@ dependencies:
   - wheel=0.47.0
   - zstd=1.5.7
   - pip:
+    - spams==2.6.5.4
       - absl-py==2.4.0
       - anndata==0.11.1
       - astunparse==1.6.3

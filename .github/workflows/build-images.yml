@@ -22,10 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         env_name:
-          - hovernet
-          - scist
           - stimage310
-          - loki_env
           - path2space310
 
     steps:
