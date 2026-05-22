@@ -1,11 +1,12 @@
 name: path2space310
 channels:
-  - pytorch
-  - bioconda
-  - nvidia
   - conda-forge
+  - bioconda
+  - pytorch
+  - nvidia
   - https://repo.anaconda.com/pkgs/main
   - https://repo.anaconda.com/pkgs/r
+  - defaults
 dependencies:
   - _libgcc_mutex=0.1
   - _openmp_mutex=4.5

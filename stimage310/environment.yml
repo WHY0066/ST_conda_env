@@ -1,6 +1,7 @@
 name: stimage310
 channels:
   - conda-forge
+  - bioconda
   - https://repo.anaconda.com/pkgs/main
   - https://repo.anaconda.com/pkgs/r
 dependencies:
