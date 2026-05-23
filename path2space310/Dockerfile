@@ -18,5 +18,10 @@ RUN /opt/conda/bin/pip install \
     --index-url https://download.pytorch.org/whl/cu124 \
     torch==2.6.0 torchvision==0.21.0
 
+# Force install opencv-python-headless to avoid libtiff/libjpeg conflict
+# (containers' conda libtiff version mismatch with libjpeg-turbo)
+RUN /opt/conda/bin/pip install --force-reinstall --no-deps \
+    opencv-python-headless==4.10.0.84
+
 WORKDIR /workspace
 CMD ["/bin/bash"]

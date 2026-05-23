@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         env_name:
-          - stimage310
+          - path2space310
 
     steps:
       - name: Checkout repository
