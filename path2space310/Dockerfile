@@ -18,10 +18,12 @@ RUN /opt/conda/bin/pip install \
     --index-url https://download.pytorch.org/whl/cu124 \
     torch==2.6.0 torchvision==0.21.0
 
-# Force install opencv-python-headless to avoid libtiff/libjpeg conflict
-# (containers' conda libtiff version mismatch with libjpeg-turbo)
-RUN /opt/conda/bin/pip install --force-reinstall --no-deps \
-    opencv-python-headless==4.10.0.84
+# Fix cv2 libtiff conflict:
+# 1. Remove conda-installed opencv (libopencv, opencv, py-opencv, opencv-python-headless from conda)
+# 2. Install pure pip opencv-python-headless (bundles its own libtiff/libjpeg)
+RUN micromamba remove -y -p /opt/conda --force \
+    libopencv opencv py-opencv opencv-python-headless 2>/dev/null || true && \
+    /opt/conda/bin/pip install --no-cache-dir opencv-python-headless==4.10.0.84
 
 WORKDIR /workspace
 CMD ["/bin/bash"]
