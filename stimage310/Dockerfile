@@ -1,5 +1,7 @@
 FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
 ENV DEBIAN_FRONTEND=noninteractive TZ=UTC PATH=/opt/conda/bin:$PATH
+ENV LD_LIBRARY_PATH=/opt/conda/lib:/usr/local/cuda/lib64:/usr/local/cuda-11.8/lib64:$LD_LIBRARY_PATH
+ENV XLA_FLAGS=--xla_gpu_cuda_data_dir=/usr/local/cuda
 
 # 关键：让 TF 能找到 CUDA + cuDNN libs
 ENV LD_LIBRARY_PATH=/opt/conda/lib:/usr/local/cuda/lib64:/usr/local/cuda-11.8/lib64:$LD_LIBRARY_PATH
